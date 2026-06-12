@@ -1,0 +1,859 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lycia & Smail - 11 Juillet 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream:#faf6f0; --gold:#c9a96e; --gold-l:#e8d5a3;
+            --rose:#d4879c;  --dark:#2c1f14; --text:#4a3728; --muted:#8a7060;
+            --sage:#7a9e7e;  --sage-l:#c5d4bc; --sage-d:#5c7a60;
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+        /* -------- PETALS -------- */
+        #petals{position:fixed;inset:0;pointer-events:none;z-index:500;overflow:hidden}
+        .petal{position:absolute;top:-30px;border-radius:50% 0;opacity:0;animation:petalFall linear infinite}
+        @keyframes petalFall{
+            0%{top:-30px;opacity:0;transform:translateX(0) rotate(0deg)}
+            10%{opacity:.85} 90%{opacity:.5}
+            100%{top:110vh;opacity:0;transform:translateX(70px) rotate(560deg)}
+        }
+        /* -------- ENVELOPE SCREEN -------- */
+        #env-screen{
+            position:fixed;inset:0;z-index:9999;
+            background:linear-gradient(155deg,#f8f0e8,#ede0d4 55%,#e6d3c0);
+            display:flex;flex-direction:column;align-items:center;justify-content:center;
+            text-align:center;padding:20px;
+            transition:opacity 1s ease,visibility 1s ease;
+        }
+        #env-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+        .env-pre{font-family:'Cormorant Garamond',serif;font-size:.75rem;letter-spacing:5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+        .env-h1{font-family:'Great Vibes',cursive;font-size:clamp(2.4rem,7vw,4rem);color:var(--dark);margin-bottom:6px}
+        .env-sub{font-family:'Cormorant Garamond',serif;font-size:.85rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:50px}
+        .env-wrap{cursor:pointer}
+        .env-svg{width:220px;height:150px;filter:drop-shadow(0 14px 35px rgba(0,0,0,.13));display:block;margin:0 auto}
+        .env-flap-top{transform-origin:110px 0;transform-box:fill-box;transition:transform .7s cubic-bezier(.4,0,.2,1)}
+        .env-wrap:hover .env-flap-top,.env-wrap.open .env-flap-top{transform:rotateX(-180deg)}
+        .env-letter-strip{
+            display:block;margin:0 auto;width:180px;
+            background:white;border-radius:3px;padding:7px 18px;
+            font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--text);
+            box-shadow:0 4px 14px rgba(0,0,0,.1);
+            opacity:0;transform:translateY(0);
+            transition:opacity .3s ease,transform .7s ease;
+            margin-top:-8px;
+        }
+        .env-wrap.open .env-letter-strip{opacity:1;transform:translateY(-88px)}
+        .env-btn{
+            display:inline-block;margin-top:32px;padding:14px 46px;
+            background:transparent;border:1px solid var(--gold);
+            font-family:'Montserrat',sans-serif;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;
+            color:var(--dark);cursor:pointer;transition:all .3s
+        }
+        .env-btn:hover{background:var(--gold);color:white}
+        /* -------- NAV -------- */
+        nav{position:fixed;top:0;width:100%;z-index:100;padding:22px 50px;display:flex;justify-content:space-between;align-items:center;transition:all .3s}
+        nav.scrolled{background:rgba(250,246,240,.96);backdrop-filter:blur(10px);padding:13px 50px;box-shadow:0 1px 20px rgba(0,0,0,.06)}
+        .nav-brand{font-family:'Great Vibes',cursive;font-size:1.9rem;color:var(--dark);text-decoration:none;transition:color .3s}
+        .nav-links{list-style:none;display:flex;gap:35px}
+        .nav-links a{font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--text);text-decoration:none;transition:color .3s}
+        .nav-links a:hover{color:var(--sage)}
+        /* nav transparente sur le hero sombre */
+        nav:not(.scrolled) .nav-brand{color:rgba(255,255,255,.9)}
+        nav:not(.scrolled) .nav-links a{color:rgba(255,255,255,.7)}
+        nav:not(.scrolled) .nav-links a:hover{color:white}
+        /* -------- HERO -------- */
+        #hero{
+            min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+            text-align:center;padding:100px 20px 80px;position:relative;overflow:hidden;
+            /* Placez votre photo nommée hero.jpg dans le même dossier que index.html */
+            background:url('hero.png') center/cover no-repeat, linear-gradient(180deg,#2c1f14 0%,#4a3728 100%);
+        }
+        .hero-overlay{position:absolute;inset:0;background:rgba(0,0,0,.42);z-index:0}
+        .hero-deco{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
+        .deco-tl{position:absolute;top:0;left:0;opacity:.07}
+        .deco-br{position:absolute;bottom:0;right:0;opacity:.07;transform:rotate(180deg)}
+        .hero-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center}
+        .hero-eye{font-size:.62rem;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:28px;animation:fadeUp 1s .2s both}
+        .hero-name{font-family:'Great Vibes',cursive;font-size:clamp(4.5rem,13vw,9.5rem);line-height:1.05;color:white}
+        .hero-name.n1{animation:fadeUp 1s .4s both}
+        .hero-name.n2{animation:fadeUp 1s .8s both}
+        .hero-amp{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.8rem,4.5vw,3rem);color:var(--gold);display:block;margin:2px 0;animation:fadeUp 1s .6s both}
+        .hero-sep{display:flex;align-items:center;gap:14px;margin:28px auto;animation:fadeUp 1s 1s both}
+        .hl{width:55px;height:1px;background:rgba(255,255,255,.35)}
+        .hd{width:7px;height:7px;background:var(--gold);transform:rotate(45deg)}
+        .hero-date{font-family:'Cormorant Garamond',serif;font-size:clamp(.95rem,2.5vw,1.25rem);letter-spacing:6px;text-transform:lowercase;color:rgba(255,255,255,.82);animation:fadeUp 1s 1.1s both}
+        .hero-loc{font-family:'Cormorant Garamond',serif;font-size:clamp(.8rem,2vw,1rem);font-style:italic;color:rgba(255,255,255,.5);margin-top:5px;animation:fadeUp 1s 1.2s both}
+        .scroll-hint{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:42px;animation:heroBounce 2.5s ease infinite .5s}
+        .scroll-hint span{font-size:.55rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.45)}
+        .scroll-bar{width:1px;height:44px;background:linear-gradient(to bottom,rgba(255,255,255,.5),transparent)}
+        @keyframes heroBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+        .cd-dot{font-family:'Cormorant Garamond',serif;font-size:4rem;color:var(--sage);opacity:.5;padding-top:5px}
+        /* -------- SHARED -------- */
+        section{padding:110px 20px}
+        .sec-hd{text-align:center;margin-bottom:65px}
+        .sec-eye{display:block;font-size:.58rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+        .sec-eye.sage{color:var(--sage)}
+        .sec-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,5vw,3.2rem);font-weight:300;font-style:italic;color:var(--dark)}
+        .sec-sep{display:flex;align-items:center;gap:12px;margin:18px auto 0;width:fit-content}
+        .sl{width:38px;height:1px;background:var(--gold)}
+        .sd{width:6px;height:6px;background:var(--gold);transform:rotate(45deg)}
+        .sl.sage{background:var(--sage)}
+        .sd.sage{background:var(--sage)}
+        /* -------- COUNTDOWN -------- */
+        #countdown{background:linear-gradient(140deg,var(--dark) 0%,#3d2a1a 100%);color:white}
+        #countdown .sec-eye{color:var(--gold-l)}
+        #countdown .sec-ttl{color:white}
+        #countdown .sl,#countdown .sd{background:var(--gold-l)}
+        .cd-grid{display:flex;justify-content:center;align-items:flex-start;gap:clamp(15px,4vw,50px);flex-wrap:wrap}
+        .cd-item{text-align:center;min-width:80px}
+        .cd-num{display:block;font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,9vw,6.5rem);font-weight:300;line-height:1;color:var(--gold-l)}
+        .cd-lbl{display:block;font-size:.52rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:8px}
+        .cd-dot{font-family:'Cormorant Garamond',serif;font-size:4rem;color:var(--gold);opacity:.3;padding-top:5px}
+        /* -------- WELCOME -------- */
+        #welcome{background:var(--cream);text-align:center}
+        .welcome-inner{max-width:680px;margin:0 auto;position:relative}
+        .welcome-quote-mark{
+            font-family:'Cormorant Garamond',serif;font-size:8rem;line-height:.6;
+            color:var(--sage-l);position:absolute;top:0;left:-20px;opacity:.6;
+            font-style:italic;pointer-events:none;user-select:none
+        }
+        .welcome-quote-mark.close{left:auto;right:-20px;top:auto;bottom:-20px}
+        .welcome-msg{
+            font-family:'Cormorant Garamond',serif;
+            font-size:clamp(1.15rem,2.5vw,1.55rem);
+            font-style:italic;font-weight:300;
+            color:var(--text);line-height:2;
+            padding:20px 40px;
+        }
+        .welcome-msg strong{
+            font-weight:400;color:var(--dark);
+        }
+        .welcome-sig{
+            margin-top:40px;
+            font-family:'Great Vibes',cursive;
+            font-size:2.4rem;color:var(--gold);
+        }
+        .welcome-fleur{
+            display:flex;align-items:center;gap:16px;
+            margin:30px auto 0;width:fit-content;
+        }
+        .wfl{width:60px;height:1px;background:linear-gradient(to right,transparent,var(--sage))}
+        .wfl.rev{background:linear-gradient(to left,transparent,var(--sage))}
+        .wfd{font-size:1rem;color:var(--sage)}
+        /* -------- DETAILS -------- */
+        #details{background:linear-gradient(180deg,var(--cream),#f2e8df)}
+        .timeline{max-width:640px;margin:0 auto}
+        .tl-item{display:flex;position:relative}
+        .tl-left{display:flex;flex-direction:column;align-items:center;width:64px;flex-shrink:0}
+        .tl-icon{
+            width:48px;height:48px;border-radius:50%;flex-shrink:0;
+            border:1.5px solid rgba(201,169,110,.35);background:white;
+            display:flex;align-items:center;justify-content:center;
+            color:var(--muted);position:relative;z-index:1;
+            box-shadow:0 2px 14px rgba(0,0,0,.07)
+        }
+        .tl-icon svg{width:20px;height:20px;stroke:var(--muted);stroke-width:1.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+        .tl-connector{width:1px;flex:1;min-height:30px;background:rgba(201,169,110,.22);margin:6px auto 0}
+        .tl-item:nth-child(2) .tl-connector,
+        .tl-item:nth-child(3) .tl-connector,
+        .tl-item:nth-child(4) .tl-connector{background:rgba(122,158,126,.22)}
+        .tl-item:last-child .tl-connector{display:none}
+        .tl-right{flex:1;padding:0 0 46px 22px}
+        .tl-time{
+            display:inline-block;background:rgba(201,169,110,.13);
+            color:var(--gold);font-size:.6rem;letter-spacing:1px;font-weight:500;
+            padding:3px 12px;border-radius:20px;margin-bottom:10px
+        }
+        .tl-item:nth-child(2) .tl-time,
+        .tl-item:nth-child(3) .tl-time,
+        .tl-item:nth-child(4) .tl-time{background:rgba(122,158,126,.13);color:var(--sage)}
+        .tl-item:nth-child(2) .tl-icon,
+        .tl-item:nth-child(3) .tl-icon,
+        .tl-item:nth-child(4) .tl-icon{border-color:rgba(122,158,126,.35)}
+        .tl-title{
+            font-family:'Cormorant Garamond',serif;
+            font-size:clamp(1.1rem,2.5vw,1.45rem);color:var(--dark);margin-bottom:8px
+        }
+        .tl-desc{font-size:.8rem;color:var(--muted);line-height:1.85}
+        .dresscode{
+            text-align:center;margin:55px auto 0;max-width:400px;
+            padding:38px 30px;background:white;border-radius:16px;
+            box-shadow:0 4px 30px rgba(0,0,0,.06);
+            border-top:3px solid var(--sage)
+        }
+        .dc-ico{display:block;margin:0 auto 16px;color:var(--muted);opacity:.55}
+        .dc-ico svg{width:32px;height:28px;stroke:currentColor;stroke-width:1.3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+        .dc-ttl{font-family:'Great Vibes',cursive;font-size:2.2rem;color:var(--dark);margin-bottom:10px}
+        .dc-hint{font-size:.8rem;color:var(--muted);line-height:1.7}
+        .venues-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;max-width:640px;margin:30px auto 0}
+        .venue-card{background:white;border-radius:10px;padding:28px 24px;box-shadow:0 4px 24px rgba(0,0,0,.06);border-top:3px solid var(--gold)}
+        .venue-card.sage{border-top-color:var(--sage)}
+        .venue-card.sage .venue-card-type{color:var(--sage)}
+        .venue-card.sage .venue-card-link{color:var(--sage);border-color:rgba(122,158,126,.3)}
+        .venue-card.sage .venue-card-link:hover{color:var(--sage-d);border-color:var(--sage-d)}
+        .venue-card-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px}
+        .venue-card-ico{width:42px;height:42px;border-radius:50%;border:1px solid var(--gold-l);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)}
+        .venue-card-type{font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+        .venue-card-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--dark)}
+        .venue-card-addr{font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:14px}
+        .venue-card-link{font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,169,110,.3);padding-bottom:2px;transition:all .3s}
+        .venue-card-link:hover{color:var(--rose);border-color:var(--rose)}
+        /* -------- RSVP -------- */
+        #rsvp{background:linear-gradient(160deg,#f9f1e9,var(--cream));text-align:center}
+        .rsvp-intro{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:var(--muted);max-width:480px;margin:0 auto 55px;line-height:1.9}
+        .rsvp-box{max-width:560px;margin:0 auto;background:white;padding:55px 50px;border-radius:4px;box-shadow:0 10px 60px rgba(0,0,0,.07)}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+        .fg{margin-bottom:25px;text-align:left}
+        .fg label{display:block;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+        .fg input,.fg select,.fg textarea{width:100%;padding:12px 16px;border:1px solid #e8e0d8;border-radius:2px;font-family:'Montserrat',sans-serif;font-size:.83rem;color:var(--text);background:#faf8f5;transition:border-color .3s;outline:none}
+        .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--sage)}
+        .fg textarea{resize:vertical;min-height:80px}
+        .radio-row{display:flex;gap:12px}
+        .ro{flex:1}
+        .ro input[type=radio]{display:none}
+        .ro label{display:block;padding:12px 8px;border:1px solid #e8e0d8;border-radius:2px;text-align:center;cursor:pointer;font-size:.62rem !important;letter-spacing:1px !important;text-transform:uppercase;color:var(--muted) !important;transition:all .3s}
+        .ro input[type=radio]:checked+label{border-color:var(--sage);background:var(--sage);color:white !important}
+        .sub-btn{width:100%;padding:17px;background:linear-gradient(135deg,var(--dark),#4a3728);color:white;border:none;font-family:'Montserrat',sans-serif;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:2px;margin-top:10px;transition:all .3s}
+        .sub-btn:hover{background:linear-gradient(135deg,var(--sage-d),var(--sage));transform:translateY(-2px);box-shadow:0 8px 25px rgba(122,158,126,.3)}
+        .form-ok{display:none;padding:40px 20px}
+        .form-ok.show{display:block}
+        .form-ok-ico{font-size:2.5rem;margin-bottom:20px}
+        .form-ok h3{font-family:'Cormorant Garamond',serif;font-size:2rem;font-style:italic;color:var(--dark);margin-bottom:12px}
+        .form-ok p{font-size:.83rem;color:var(--muted);line-height:1.8}
+        /* -------- FOOTER -------- */
+        footer{background:linear-gradient(160deg,var(--sage-d) 0%,var(--sage) 100%);color:rgba(255,255,255,.75);text-align:center;padding:60px 20px}
+        .ft-names{font-family:'Great Vibes',cursive;font-size:2.8rem;color:white;margin-bottom:10px}
+        .ft-date{font-family:'Cormorant Garamond',serif;font-size:.88rem;letter-spacing:5px;color:rgba(255,255,255,.6);margin-bottom:28px}
+        .ft-rule{width:50px;height:1px;background:rgba(255,255,255,.4);margin:0 auto 18px}
+        .ft-copy{font-size:.6rem;letter-spacing:1px}
+        /* -------- MUSIC BTN -------- */
+        #music-btn{
+            position:fixed;bottom:30px;right:30px;z-index:600;
+            width:50px;height:50px;border-radius:50%;
+            background:rgba(44,31,20,.88);backdrop-filter:blur(10px);
+            border:1px solid var(--gold);color:var(--gold-l);
+            font-size:1.4rem;cursor:pointer;
+            display:flex;align-items:center;justify-content:center;
+            transition:background .3s,transform .3s;
+            box-shadow:0 4px 20px rgba(0,0,0,.25);
+            opacity:0;transform:scale(0);pointer-events:none;
+        }
+        #music-btn.on{opacity:1;transform:scale(1);pointer-events:all;transition:opacity .6s .3s,transform .6s .3s,background .3s}
+        #music-btn.playing{animation:mPulse 2s ease infinite}
+        #music-btn:hover{background:var(--gold);color:white;transform:scale(1.12)!important;animation:none!important}
+        .music-icon-pause{display:none}
+        #music-btn.playing .music-icon-play{display:none}
+        #music-btn.playing .music-icon-pause{display:block}
+        @keyframes mPulse{
+            0%,100%{box-shadow:0 4px 20px rgba(0,0,0,.25),0 0 0 0 rgba(201,169,110,.5)}
+            70%{box-shadow:0 4px 20px rgba(0,0,0,.25),0 0 0 14px rgba(201,169,110,0)}
+        }
+        /* -------- GALLERY -------- */
+        #gallery{background:linear-gradient(180deg,#f2e8df,var(--cream))}
+        .gallery-venue{max-width:920px;margin:0 auto 70px}
+        .gallery-venue:last-child{margin-bottom:0}
+        .gallery-venue-hd{
+            display:flex;align-items:center;gap:16px;
+            margin-bottom:22px;padding-bottom:18px;
+            border-bottom:1px solid rgba(201,169,110,.2)
+        }
+        .gallery-venue-hd.sage{border-bottom-color:rgba(122,158,126,.2)}
+        .gallery-venue-ico{
+            width:42px;height:42px;border-radius:50%;flex-shrink:0;
+            border:1px solid var(--gold-l);color:var(--gold);
+            display:flex;align-items:center;justify-content:center;font-size:1rem
+        }
+        .gallery-venue-ico.sage{border-color:var(--sage-l);color:var(--sage)}
+        .gallery-venue-time{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+        .gallery-venue-time.sage{color:var(--sage)}
+        .gallery-venue-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;color:var(--dark)}
+        .gallery-venue-addr{font-size:.68rem;color:var(--muted);margin-top:3px}
+        .gallery-venue-time{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+        .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+        .gphoto{
+            aspect-ratio:4/3;border-radius:3px;overflow:hidden;
+            background:#f0e8e0 linear-gradient(135deg,#f0e8e0,#e8d5c4);
+            background-size:cover;background-position:center;
+            position:relative;cursor:pointer;
+            transition:transform .4s,box-shadow .4s
+        }
+        .gphoto:hover{transform:scale(1.02);box-shadow:0 8px 30px rgba(0,0,0,.12)}
+        .gphoto-ph{
+            position:absolute;inset:0;
+            display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px
+        }
+        .gphoto-ph-ico{font-size:1.6rem;color:var(--gold);opacity:.45}
+        .gphoto-ph-txt{font-size:.52rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:.65}
+        .gphoto-overlay{
+            position:absolute;inset:0;background:rgba(44,31,20,0);
+            transition:background .3s;display:flex;align-items:center;justify-content:center
+        }
+        .gphoto:hover .gphoto-overlay{background:rgba(44,31,20,.28)}
+        .gphoto-zoom{
+            font-size:1.2rem;color:white;opacity:0;
+            transition:opacity .3s;
+        }
+        .gphoto:hover .gphoto-zoom{opacity:1}
+        /* LIGHTBOX */
+        #lightbox{
+            display:none;position:fixed;inset:0;z-index:2000;
+            background:rgba(0,0,0,.93);
+            align-items:center;justify-content:center;cursor:zoom-out
+        }
+        #lightbox.open{display:flex}
+        .lb-wrap{position:relative;max-width:90vw;max-height:90vh}
+        #lb-img{max-width:100%;max-height:90vh;border-radius:3px;display:block;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+        .lb-close{
+            position:absolute;top:-14px;right:-14px;
+            width:34px;height:34px;border-radius:50%;
+            background:var(--gold);border:none;color:white;font-size:.85rem;
+            cursor:pointer;display:flex;align-items:center;justify-content:center;
+            transition:background .3s
+        }
+        .lb-close:hover{background:var(--rose)}
+        /* -------- ANIM -------- */
+        @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+        .reveal{opacity:0;transform:translateY(28px);transition:opacity .85s ease,transform .85s ease}
+        .reveal.in{opacity:1;transform:translateY(0)}
+        /* -------- RESPONSIVE -------- */
+        @media(max-width:760px){
+            nav{padding:14px 20px}
+            .nav-links{display:none}
+            .form-row{grid-template-columns:1fr}
+            .rsvp-box{padding:30px 22px}
+            .cd-dot{display:none}
+        }
+    </style>
+</head>
+<body>
+<!-- PETALS -->
+<div id="petals"></div>
+
+<!-- AUDIO : remplacez le src par votre MP3 (lien direct OneDrive, Google Drive, etc.) -->
+<audio id="bg-music" loop preload="auto">
+    <source src="musique.opus" type="audio/ogg; codecs=opus">
+    <source src="musique.m4a"  type="audio/mp4">
+    <source src="musique.mp3"  type="audio/mpeg">
+</audio>
+
+<!-- BOUTON MUSIQUE -->
+<button id="music-btn" onclick="toggleMusic()" title="Musique">
+    <span class="music-icon-play">&#9834;</span>
+    <span class="music-icon-pause">&#10074;&#10074;</span>
+</button>
+<!-- ENVELOPE SCREEN -->
+<div id="env-screen">
+    <p class="env-pre">Vous êtes invités</p>
+    <h1 class="env-h1">Lycia &amp; Smail</h1>
+    <p class="env-sub">11 &middot; 07 &middot; 2026</p>
+    <div class="env-wrap" id="envWrap">
+        <svg class="env-svg" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
+            <rect fill="#f0e6d8" width="220" height="150" rx="4"/>
+            <polygon fill="#e8d8c4" points="0,0 110,82 0,150"/>
+            <polygon fill="#ddd0bc" points="220,0 110,82 220,150"/>
+            <polygon fill="#e0ceb4" points="0,150 220,150 110,82"/>
+            <polygon class="env-flap-top" fill="#c9b898" points="0,0 220,0 110,82"/>
+            <circle cx="110" cy="86" r="15" fill="#c9a96e" opacity=".9"/>
+            <text x="110" y="92" text-anchor="middle" font-family="serif" font-size="13" fill="white">&#9829;</text>
+        </svg>
+        <span class="env-letter-strip">L &amp; S &middot; 11.07.2026</span>
+        <br>
+        <button class="env-btn" onclick="openEnv()">Ouvrir l&#39;invitation</button>
+    </div>
+</div>
+<!-- NAV -->
+<nav id="nav">
+    <a href="#hero" class="nav-brand">L &amp; S</a>
+    <ul class="nav-links">
+        <li><a href="#welcome">Notre message</a></li>
+        <li><a href="#details">Programme</a></li>
+        <li><a href="#gallery">Photos</a></li>
+        <li><a href="#rsvp">Confirmation</a></li>
+    </ul>
+</nav>
+<!-- HERO -->
+<section id="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-deco">
+        <svg class="deco-tl" width="300" height="300" viewBox="0 0 300 300" fill="none" stroke="rgba(255,255,255,.18)" stroke-width=".7">
+            <path d="M0,150 C70,60 140,20 210,0"/><path d="M0,100 C90,30 170,8 280,0"/>
+            <path d="M0,200 C45,110 100,65 160,30"/><circle cx="210" cy="0" r="26"/>
+            <path d="M188,-22 Q210,-44 232,-22 Q254,0 232,22 Q210,44 188,22 Q166,0 188,-22"/>
+        </svg>
+        <svg class="deco-br" width="300" height="300" viewBox="0 0 300 300" fill="none" stroke="rgba(255,255,255,.18)" stroke-width=".7">
+            <path d="M0,150 C70,60 140,20 210,0"/><path d="M0,100 C90,30 170,8 280,0"/>
+            <path d="M0,200 C45,110 100,65 160,30"/>
+        </svg>
+    </div>
+    <div class="hero-content">
+        <p class="hero-eye">Nous nous marions</p>
+        <h1 class="hero-name n1">Lycia</h1>
+        <span class="hero-amp">&amp;</span>
+        <h1 class="hero-name n2">Smail</h1>
+        <div class="hero-sep"><div class="hl"></div><div class="hd"></div><div class="hl"></div></div>
+        <p class="hero-date">11 juillet 2026</p>
+        <div class="scroll-hint">
+            <div class="scroll-bar"></div>
+            <span>Découvrir</span>
+        </div>
+    </div>
+</section>
+<!-- COUNTDOWN -->
+<section id="countdown">
+    <div class="sec-hd">
+        <span class="sec-eye">Compte à rebours</span>
+        <h2 class="sec-ttl">Plus que&#8230;</h2>
+        <div class="sec-sep"><div class="sl"></div><div class="sd"></div><div class="sl"></div></div>
+    </div>
+    <div class="cd-grid">
+        <div class="cd-item reveal"><span class="cd-num" id="cd-d">000</span><span class="cd-lbl">Jours</span></div>
+        <div class="cd-dot">&middot;</div>
+        <div class="cd-item reveal"><span class="cd-num" id="cd-h">00</span><span class="cd-lbl">Heures</span></div>
+        <div class="cd-dot">&middot;</div>
+        <div class="cd-item reveal"><span class="cd-num" id="cd-m">00</span><span class="cd-lbl">Minutes</span></div>
+        <div class="cd-dot">&middot;</div>
+        <div class="cd-item reveal"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">Secondes</span></div>
+    </div>
+</section>
+<!-- WELCOME -->
+<section id="welcome">
+    <div class="welcome-inner reveal">
+        <span class="welcome-quote-mark">&ldquo;</span>
+        <p class="welcome-msg">
+            C&#39;est avec une <strong>immense joie</strong> et beaucoup d&#39;<strong>émotion</strong>
+            que nous vous convions à partager le <strong>plus beau jour de notre vie</strong>.<br><br>
+            Votre présence à nos côtés sera le plus beau des cadeaux,
+            et chaque sourire partagé, chaque larme de bonheur versée,
+            chaque danse et chaque éclat de rire resteront gravés
+            à jamais dans nos cœurs.<br><br>
+            Venez célébrer avec nous ce moment unique,
+            celui où deux destins ne font plus qu&#39;un.
+        </p>
+        <span class="welcome-quote-mark close">&rdquo;</span>
+        <div class="welcome-fleur">
+            <div class="wfl"></div>
+            <span class="wfd">&#10047;</span>
+            <div class="wfl rev"></div>
+        </div>
+        <div class="welcome-sig">Lycia &amp; Smail</div>
+    </div>
+</section>
+<!-- DETAILS -->
+<section id="details">
+    <div class="sec-hd reveal">
+        <span class="sec-eye sage">Ce que nous avons préparé pour vous</span>
+        <h2 class="sec-ttl">Programme</h2>
+        <div class="sec-sep"><div class="sl sage"></div><div class="sd sage"></div><div class="sl sage"></div></div>
+    </div>
+
+    <!-- Lieux EN PREMIER -->
+    <div class="venues-grid reveal">
+        <div class="venue-card">
+            <div class="venue-card-top">
+                <div class="venue-card-ico">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+                </div>
+                <div>
+                    <div class="venue-card-type">Cérémonie civile &middot; 16h00</div>
+                    <div class="venue-card-name">Mairie de Boulogne-Billancourt</div>
+                </div>
+            </div>
+            <div class="venue-card-addr">26 Av. André Morizet, 92100 Boulogne-Billancourt</div>
+            <a href="https://www.google.com/maps/search/?api=1&query=26+Avenue+Andre+Morizet+92100+Boulogne-Billancourt" target="_blank" class="venue-card-link">Voir sur Google Maps &#8594;</a>
+        </div>
+        <div class="venue-card sage">
+            <div class="venue-card-top">
+                <div class="venue-card-ico">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                </div>
+                <div>
+                    <div class="venue-card-type">Réception &amp; Soirée &middot; 19h30</div>
+                    <div class="venue-card-name">Salle de réception &mdash; Plaisir</div>
+                </div>
+            </div>
+            <div class="venue-card-addr">78370 Plaisir, Yvelines</div>
+            <a href="https://maps.google.com/?q=Plaisir+78370" target="_blank" class="venue-card-link">Voir sur Google Maps &#8594;</a>
+        </div>
+    </div>
+
+    <!-- TIMELINE ensuite -->
+    <div class="timeline" style="margin-top:70px">
+
+        <!-- 16h00 Mairie -->
+        <div class="tl-item reveal">
+            <div class="tl-left">
+                <div class="tl-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                </div>
+                <div class="tl-connector"></div>
+            </div>
+            <div class="tl-right">
+                <span class="tl-time">16:00</span>
+                <div class="tl-title">Cérémonie Mairie</div>
+                <p class="tl-desc">Cérémonie de Mariage à la Mairie de Boulogne-Billancourt au 26 Av. André Morizet, 92100 Boulogne-Billancourt.<br><a href="https://www.google.com/maps/search/?api=1&query=26+Avenue+Andre+Morizet+92100+Boulogne-Billancourt" target="_blank" style="color:var(--gold);font-size:.75rem">Voir sur la carte &#8594;</a></p>
+            </div>
+        </div>
+
+        <!-- 17h00 Photos -->
+        <div class="tl-item reveal">
+            <div class="tl-left">
+                <div class="tl-icon">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><circle cx="12" cy="14" r="3"/></svg>
+                </div>
+                <div class="tl-connector"></div>
+            </div>
+            <div class="tl-right">
+                <span class="tl-time">17:00</span>
+                <div class="tl-title">Séance photos avec les invités</div>
+                <p class="tl-desc">Des photos seront prises afin de capturer chaque instant que nous partageons pour en garder des souvenirs lumineux et intemporels.</p>
+            </div>
+        </div>
+
+        <!-- 19h30 Reception -->
+        <div class="tl-item reveal">
+            <div class="tl-left">
+                <div class="tl-icon">
+                    <svg viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+                </div>
+                <div class="tl-connector"></div>
+            </div>
+            <div class="tl-right">
+                <span class="tl-time">19:30</span>
+                <div class="tl-title">Réception et soirée mariage</div>
+                <p class="tl-desc">Une petite surprise se prépare pour la soirée&#8230; Un moment pensé pour vous émerveiller, vous faire sourire et rendre cette nuit encore plus inoubliable. Gardez l&#39;œil ouvert&#8230; quelque chose de magique vous attend.<br><a href="https://maps.google.com/?q=Plaisir+78370" target="_blank" style="color:var(--gold);font-size:.75rem">Voir sur la carte &#8594;</a></p>
+            </div>
+        </div>
+
+        <!-- 23h30 Fin -->
+        <div class="tl-item reveal">
+            <div class="tl-left">
+                <div class="tl-icon">
+                    <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                </div>
+                <div class="tl-connector"></div>
+            </div>
+            <div class="tl-right">
+                <span class="tl-time">23:30</span>
+                <div class="tl-title">Quand la nuit referme son rideau</div>
+                <p class="tl-desc">Fin de la soirée</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Dress Code EN DERNIER -->
+    <div class="dresscode reveal">
+        <span class="dc-ico">
+            <svg viewBox="0 0 36 30"><path d="M10 3C11 6.5 14 8 18 8C22 8 25 6.5 26 3L33 8.5L28 12V27H8V12L3 8.5Z"/></svg>
+        </span>
+        <div class="dc-ttl">Dress Code</div>
+        <p class="dc-hint">Venez comme vous êtes, dans la tenue qui vous ressemble le plus.</p>
+    </div>
+
+</section>
+
+<!-- GALLERY -->
+<!-- Pour ajouter vos photos : dans chaque .gphoto, remplacez data-src="" par data-src="URL_DE_VOTRE_PHOTO" -->
+<section id="gallery">
+    <div class="sec-hd reveal">
+        <span class="sec-eye sage">Découvrez les lieux</span>
+        <h2 class="sec-ttl">En images</h2>
+        <div class="sec-sep"><div class="sl sage"></div><div class="sd sage"></div><div class="sl sage"></div></div>
+    </div>
+
+    <!-- Lieu 1 : Mairie Boulogne-Billancourt -->
+    <div class="gallery-venue reveal">
+        <div class="gallery-venue-hd">
+            <div class="gallery-venue-ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+            </div>
+            <div class="gallery-venue-info">
+                <div class="gallery-venue-name">Mairie de Boulogne-Billancourt</div>
+                <div class="gallery-venue-addr">26 Av. André Morizet &middot; 92100 Boulogne-Billancourt</div>
+            </div>
+            <span class="gallery-venue-time">16h00</span>
+        </div>
+        <div class="gallery-grid">
+            <div class="gphoto" data-src="mairie-1.png" onclick="openLb(this)">
+                <div class="gphoto-ph"><div class="gphoto-ph-ico">&#9998;</div><div class="gphoto-ph-txt">Ajouter une photo</div></div>
+                <div class="gphoto-overlay"><span class="gphoto-zoom">&#128269;</span></div>
+            </div>
+            <div class="gphoto" data-src="" onclick="openLb(this)">
+                <div class="gphoto-ph"><div class="gphoto-ph-ico">&#9998;</div><div class="gphoto-ph-txt">Ajouter une photo</div></div>
+                <div class="gphoto-overlay"><span class="gphoto-zoom">&#128269;</span></div>
+            </div>
+            <div class="gphoto" data-src="" onclick="openLb(this)">
+                <div class="gphoto-ph"><div class="gphoto-ph-ico">&#9998;</div><div class="gphoto-ph-txt">Ajouter une photo</div></div>
+                <div class="gphoto-overlay"><span class="gphoto-zoom">&#128269;</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lieu 2 : Salle Plaisir -->
+    <div class="gallery-venue reveal" style="margin-top:55px">
+        <div class="gallery-venue-hd sage">
+            <div class="gallery-venue-ico sage">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            </div>
+            <div class="gallery-venue-info">
+                <div class="gallery-venue-name">Salle de réception &mdash; Plaisir</div>
+                <div class="gallery-venue-addr">78370 Plaisir, Yvelines</div>
+            </div>
+            <span class="gallery-venue-time sage">19h30</span>
+        </div>
+        <div class="gallery-grid">
+            <div class="gphoto" data-src="salle-1.png" onclick="openLb(this)">
+                <div class="gphoto-ph"><div class="gphoto-ph-ico">&#9998;</div><div class="gphoto-ph-txt">Ajouter une photo</div></div>
+                <div class="gphoto-overlay"><span class="gphoto-zoom">&#128269;</span></div>
+            </div>
+            <div class="gphoto" data-src="salle-2.jpeg" onclick="openLb(this)">
+                <div class="gphoto-ph"><div class="gphoto-ph-ico">&#9998;</div><div class="gphoto-ph-txt">Ajouter une photo</div></div>
+                <div class="gphoto-overlay"><span class="gphoto-zoom">&#128269;</span></div>
+            </div>
+            <div class="gphoto" data-src="salle-3.png" onclick="openLb(this)">
+                <div class="gphoto-ph"><div class="gphoto-ph-ico">&#9998;</div><div class="gphoto-ph-txt">Ajouter une photo</div></div>
+                <div class="gphoto-overlay"><span class="gphoto-zoom">&#128269;</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeLb()">
+    <div class="lb-wrap" onclick="event.stopPropagation()">
+        <img id="lb-img" src="" alt="Photo du lieu">
+        <button class="lb-close" onclick="closeLb()">&#10005;</button>
+    </div>
+</div>
+
+<!-- RSVP -->
+<section id="rsvp">
+    <div class="sec-hd reveal">
+        <span class="sec-eye sage">Confirmation de présence</span>
+        <h2 class="sec-ttl">Confirmation</h2>
+        <div class="sec-sep"><div class="sl sage"></div><div class="sd sage"></div><div class="sl sage"></div></div>
+    </div>
+    <p class="rsvp-intro reveal">
+        Merci de confirmer votre présence avant le <strong>30 juin 2026</strong>.<br>
+        Votre réponse nous aide à préparer la plus belle fête de notre vie.
+    </p>
+    <div class="rsvp-box reveal">
+        <div id="formBody">
+            <div class="form-row">
+                <div class="fg"><label>Prenom</label><input id="f-prenom" type="text" placeholder="Marie"></div>
+                <div class="fg"><label>Nom</label><input id="f-nom" type="text" placeholder="Dupont"></div>
+            </div>
+            <div class="fg">
+                <label>Presence</label>
+                <div class="radio-row">
+                    <div class="ro"><input type="radio" name="att" id="ry" value="y" checked><label for="ry">&#10003; Avec joie !</label></div>
+                    <div class="ro"><input type="radio" name="att" id="rn" value="n"><label for="rn">&#10007; Malheureusement</label></div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="fg">
+                    <label>Nombre d&#39;adultes</label>
+                    <input id="f-adultes" type="number" min="1" max="20" placeholder="Ex : 2">
+                </div>
+                <div class="fg">
+                    <label>Nombre d&#39;enfants</label>
+                    <input id="f-enfants" type="number" min="0" max="20" placeholder="Ex : 0">
+                </div>
+            </div>
+            <div class="fg"><label>Régime alimentaire</label><input id="f-regime" type="text" placeholder="Végétarien, sans gluten&#8230;"></div>
+            <div class="fg"><label>Un mot pour nous ?</label><textarea id="f-message" placeholder="Vos vœux, anecdotes&#8230;"></textarea></div>
+            <button class="sub-btn" onclick="submitForm()">Envoyer ma réponse</button>
+        </div>
+        <div class="form-ok" id="formOk">
+            <div class="form-ok-ico">&#10084;</div>
+            <h3>Merci infiniment !</h3>
+            <p>Nous avons bien reçu votre réponse.<br>Nous avons hâte de célébrer ce moment avec vous.</p>
+        </div>
+    </div>
+</section>
+<!-- FOOTER -->
+<footer>
+    <div class="ft-names">Lycia &amp; Smail</div>
+    <div class="ft-date">11 &middot; 07 &middot; 2026</div>
+    <div class="ft-rule"></div>
+    <p class="ft-copy">Avec tout notre amour &#9825;</p>
+</footer>
+<script>
+// ===== ENVELOPE =====
+document.body.style.overflow = 'hidden';
+function openEnv() {
+    document.getElementById('envWrap').classList.add('open');
+    spawnPetals(30);
+    setTimeout(function() {
+        document.getElementById('env-screen').classList.add('hidden');
+        document.body.style.overflow = '';
+        startMusic();
+    }, 1400);
+}
+
+// ===== MUSIC =====
+var music = document.getElementById('bg-music');
+var musicBtn = document.getElementById('music-btn');
+
+function startMusic() {
+    musicBtn.classList.add('on');
+    music.volume = 0;
+    music.play().then(function() {
+        musicBtn.classList.add('playing');
+        fadeVolume(0, 0.35, 3000);
+    }).catch(function() {
+        // autoplay bloque : bouton visible mais en pause
+    });
+}
+
+function fadeVolume(from, to, duration) {
+    var steps = 40;
+    var step  = (to - from) / steps;
+    var delay = duration / steps;
+    var current = from;
+    var timer = setInterval(function() {
+        current += step;
+        if ((step > 0 && current >= to) || (step < 0 && current <= to)) {
+            music.volume = Math.max(0, Math.min(1, to));
+            clearInterval(timer);
+        } else {
+            music.volume = Math.max(0, Math.min(1, current));
+        }
+    }, delay);
+}
+
+function toggleMusic() {
+    if (music.paused) {
+        music.play();
+        musicBtn.classList.add('playing');
+        fadeVolume(music.volume, 0.35, 1000);
+    } else {
+        fadeVolume(music.volume, 0, 800);
+        setTimeout(function() { music.pause(); }, 850);
+        musicBtn.classList.remove('playing');
+    }
+}
+// ===== PETALS =====
+var PCOLS = ['#f7c5d0','#fadadd','#ffe0e6','#fce4d6','#c5d4bc','#b8cdb0','#d4e4cc','#f4d4dc','#ccdac4'];
+function makePetal() {
+    var el = document.createElement('div');
+    el.className = 'petal';
+    var sz  = 7 + Math.random() * 11;
+    var col = PCOLS[Math.floor(Math.random() * PCOLS.length)];
+    el.style.left              = (Math.random() * 100) + 'vw';
+    el.style.width             = sz + 'px';
+    el.style.height            = (sz * 1.35) + 'px';
+    el.style.background        = col;
+    el.style.animationDuration = (5 + Math.random() * 7) + 's';
+    el.style.animationDelay    = (Math.random() * 3) + 's';
+    el.style.transform         = 'rotate(' + Math.floor(Math.random() * 360) + 'deg)';
+    return el;
+}
+function spawnPetals(n) {
+    var c = document.getElementById('petals');
+    for (var i = 0; i < n; i++) { c.appendChild(makePetal()); }
+}
+spawnPetals(18);
+setInterval(function() {
+    var c = document.getElementById('petals');
+    if (c.children.length < 35) {
+        var p = makePetal();
+        p.style.animationDelay = '0s';
+        c.appendChild(p);
+        setTimeout(function() { p.remove(); }, 13000);
+    }
+}, 900);
+// ===== COUNTDOWN =====
+function tick() {
+    var now    = new Date();
+    var target = new Date('2026-07-11T16:00:00');
+    var diff   = Math.max(0, target - now);
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000)  / 60000);
+    var s = Math.floor((diff % 60000)    / 1000);
+    document.getElementById('cd-d').textContent = String(d).padStart(3,'0');
+    document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+}
+tick(); setInterval(tick, 1000);
+// ===== SCROLL REVEAL =====
+var obs = new IntersectionObserver(function(es) {
+    es.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+// ===== NAVBAR =====
+window.addEventListener('scroll', function() {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+// ===== GALLERY =====
+document.querySelectorAll('.gphoto').forEach(function(el) {
+    var src = (el.dataset.src || '').trim();
+    if (src) {
+        el.style.backgroundImage = 'url(' + src + ')';
+        var ph = el.querySelector('.gphoto-ph');
+        if (ph) ph.style.display = 'none';
+    }
+});
+function openLb(el) {
+    var src = (el.dataset.src || '').trim();
+    if (!src) return;
+    document.getElementById('lb-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeLb() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLb(); });
+
+// ===== RSVP =====
+// ⬇️  Collez ici votre lien Formspree (ex: https://formspree.io/f/XXXXXXXX)
+var RSVP_URL = '';
+
+function submitForm() {
+    var btn = document.querySelector('.sub-btn');
+    var data = {
+        prenom:   (document.getElementById('f-prenom').value  || '').trim(),
+        nom:      (document.getElementById('f-nom').value     || '').trim(),
+        presence: document.querySelector('input[name="att"]:checked').value === 'y' ? 'Présent(e)' : 'Absent(e)',
+        adultes:  document.getElementById('f-adultes').value  || '0',
+        enfants:  document.getElementById('f-enfants').value  || '0',
+        regime:   document.getElementById('f-regime').value   || '-',
+        message:  document.getElementById('f-message').value  || ''
+    };
+    if (!RSVP_URL) {
+        // Lien pas encore configuré : on affiche quand même le message de succès
+        document.getElementById('formBody').style.display = 'none';
+        document.getElementById('formOk').classList.add('show');
+        return;
+    }
+    btn.textContent = 'Envoi en cours…';
+    btn.disabled = true;
+    fetch(RSVP_URL, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body:    JSON.stringify(data)
+    })
+    .then(function(r) {
+        document.getElementById('formBody').style.display = 'none';
+        document.getElementById('formOk').classList.add('show');
+    })
+    .catch(function() {
+        btn.textContent = 'Réessayer';
+        btn.disabled = false;
+        alert('Une erreur est survenue, merci de réessayer.');
+    });
+}
+</script>
+</body>
+</html>
