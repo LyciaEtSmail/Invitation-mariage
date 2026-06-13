@@ -42,8 +42,8 @@
         .env-wrap:hover .env-flap-top,.env-wrap.open .env-flap-top{transform:rotateX(-180deg)}
         .env-letter-strip{
             display:block;margin:0 auto;width:180px;
-            background:white;border-radius:3px;padding:7px 18px;
-            font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--text);
+            background:var(--sage);border-radius:3px;padding:7px 18px;
+            font-family:'Cormorant Garamond',serif;font-size:.9rem;color:white;
             box-shadow:0 4px 14px rgba(0,0,0,.1);
             opacity:0;transform:translateY(0);
             transition:opacity .3s ease,transform .7s ease;
@@ -52,11 +52,11 @@
         .env-wrap.open .env-letter-strip{opacity:1;transform:translateY(-88px)}
         .env-btn{
             display:inline-block;margin-top:32px;padding:14px 46px;
-            background:transparent;border:1px solid var(--gold);
+            background:transparent;border:1px solid var(--sage);
             font-family:'Montserrat',sans-serif;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;
-            color:var(--dark);cursor:pointer;transition:all .3s
+            color:var(--sage-d);cursor:pointer;transition:all .3s
         }
-        .env-btn:hover{background:var(--gold);color:white}
+        .env-btn:hover{background:var(--sage);color:white}
         /* -------- NAV -------- */
         nav{position:fixed;top:0;width:100%;z-index:100;padding:22px 50px;display:flex;justify-content:space-between;align-items:center;transition:all .3s}
         nav.scrolled{background:rgba(250,246,240,.96);backdrop-filter:blur(10px);padding:13px 50px;box-shadow:0 1px 20px rgba(0,0,0,.06)}
@@ -220,8 +220,8 @@
         .ro input[type=radio]{display:none}
         .ro label{display:block;padding:12px 8px;border:1px solid #e8e0d8;border-radius:2px;text-align:center;cursor:pointer;font-size:.62rem !important;letter-spacing:1px !important;text-transform:uppercase;color:var(--muted) !important;transition:all .3s}
         .ro input[type=radio]:checked+label{border-color:var(--sage);background:var(--sage);color:white !important}
-        .sub-btn{width:100%;padding:17px;background:linear-gradient(135deg,var(--dark),#4a3728);color:white;border:none;font-family:'Montserrat',sans-serif;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:2px;margin-top:10px;transition:all .3s}
-        .sub-btn:hover{background:linear-gradient(135deg,var(--sage-d),var(--sage));transform:translateY(-2px);box-shadow:0 8px 25px rgba(122,158,126,.3)}
+        .sub-btn{width:100%;padding:17px;background:linear-gradient(135deg,var(--sage-d),var(--sage));color:white;border:none;font-family:'Montserrat',sans-serif;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:2px;margin-top:10px;transition:all .3s}
+        .sub-btn:hover{background:linear-gradient(135deg,var(--sage),var(--sage-d));transform:translateY(-2px);box-shadow:0 8px 25px rgba(122,158,126,.3)}
         .form-ok{display:none;padding:40px 20px}
         .form-ok.show{display:block}
         .form-ok-ico{font-size:2.5rem;margin-bottom:20px}
@@ -277,6 +277,7 @@
         .gallery-venue-addr{font-size:.68rem;color:var(--muted);margin-top:3px}
         .gallery-venue-time{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);white-space:nowrap}
         .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+        .gallery-single{grid-template-columns:1fr;max-width:500px;margin:0 auto}
         .gphoto{
             aspect-ratio:4/3;border-radius:3px;overflow:hidden;
             background:#f0e8e0 linear-gradient(135deg,#f0e8e0,#e8d5c4);
@@ -355,11 +356,11 @@
     <p class="env-sub">11 &middot; 07 &middot; 2026</p>
     <div class="env-wrap" id="envWrap">
         <svg class="env-svg" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
-            <rect fill="#f0e6d8" width="220" height="150" rx="4"/>
-            <polygon fill="#e8d8c4" points="0,0 110,82 0,150"/>
-            <polygon fill="#ddd0bc" points="220,0 110,82 220,150"/>
-            <polygon fill="#e0ceb4" points="0,150 220,150 110,82"/>
-            <polygon class="env-flap-top" fill="#c9b898" points="0,0 220,0 110,82"/>
+            <rect fill="#e0ede0" width="220" height="150" rx="4"/>
+            <polygon fill="#c8d9c4" points="0,0 110,82 0,150"/>
+            <polygon fill="#bdd0b8" points="220,0 110,82 220,150"/>
+            <polygon fill="#c2d3be" points="0,150 220,150 110,82"/>
+            <polygon class="env-flap-top" fill="#7a9e7e" points="0,0 220,0 110,82"/>
             <circle cx="110" cy="86" r="15" fill="#c9a96e" opacity=".9"/>
             <text x="110" y="92" text-anchor="middle" font-family="serif" font-size="13" fill="white">&#9829;</text>
         </svg>
@@ -430,7 +431,7 @@
             C&#39;est avec une <strong>immense joie</strong> et beaucoup d&#39;<strong>émotion</strong>
             que nous vous convions à partager le <strong>plus beau jour de notre vie</strong>.<br><br>
             Votre présence à nos côtés sera le plus beau des cadeaux,
-            et chaque sourire partagé, chaque larme de bonheur versée,
+            et chaque sourire partagé,
             chaque danse et chaque éclat de rire resteront gravés
             à jamais dans nos cœurs.<br><br>
             Venez célébrer avec nous ce moment unique,
@@ -478,8 +479,8 @@
                     <div class="venue-card-name">Salle de réception &mdash; Plaisir</div>
                 </div>
             </div>
-            <div class="venue-card-addr">78370 Plaisir, Yvelines</div>
-            <a href="https://maps.google.com/?q=Plaisir+78370" target="_blank" class="venue-card-link">Voir sur Google Maps &#8594;</a>
+            <div class="venue-card-addr">1869 rue de la Boissière, 78370 Plaisir</div>
+            <a href="https://maps.google.com/?q=1869+rue+de+la+Boissiere+78370+Plaisir" target="_blank" class="venue-card-link">Voir sur Google Maps &#8594;</a>
         </div>
     </div>
 
@@ -497,7 +498,7 @@
             <div class="tl-right">
                 <span class="tl-time">16:00</span>
                 <div class="tl-title">Cérémonie Mairie</div>
-                <p class="tl-desc">Cérémonie de Mariage à la Mairie de Boulogne-Billancourt au 26 Av. André Morizet, 92100 Boulogne-Billancourt.<br><a href="https://www.google.com/maps/search/?api=1&query=26+Avenue+Andre+Morizet+92100+Boulogne-Billancourt" target="_blank" style="color:var(--gold);font-size:.75rem">Voir sur la carte &#8594;</a></p>
+                <p class="tl-desc">Cérémonie de Mariage à la Mairie de Boulogne-Billancourt.<br><a href="https://www.google.com/maps/search/?api=1&query=26+Avenue+Andre+Morizet+92100+Boulogne-Billancourt" target="_blank" style="color:var(--gold);font-size:.75rem">Voir sur la carte &#8594;</a></p>
             </div>
         </div>
 
@@ -580,16 +581,8 @@
             </div>
             <span class="gallery-venue-time">16h00</span>
         </div>
-        <div class="gallery-grid">
+        <div class="gallery-grid gallery-single">
             <div class="gphoto" data-src="mairie-1.png" onclick="openLb(this)">
-                <div class="gphoto-ph"><div class="gphoto-ph-ico">&#9998;</div><div class="gphoto-ph-txt">Ajouter une photo</div></div>
-                <div class="gphoto-overlay"><span class="gphoto-zoom">&#128269;</span></div>
-            </div>
-            <div class="gphoto" data-src="" onclick="openLb(this)">
-                <div class="gphoto-ph"><div class="gphoto-ph-ico">&#9998;</div><div class="gphoto-ph-txt">Ajouter une photo</div></div>
-                <div class="gphoto-overlay"><span class="gphoto-zoom">&#128269;</span></div>
-            </div>
-            <div class="gphoto" data-src="" onclick="openLb(this)">
                 <div class="gphoto-ph"><div class="gphoto-ph-ico">&#9998;</div><div class="gphoto-ph-txt">Ajouter une photo</div></div>
                 <div class="gphoto-overlay"><span class="gphoto-zoom">&#128269;</span></div>
             </div>
@@ -604,7 +597,7 @@
             </div>
             <div class="gallery-venue-info">
                 <div class="gallery-venue-name">Salle de réception &mdash; Plaisir</div>
-                <div class="gallery-venue-addr">78370 Plaisir, Yvelines</div>
+                <div class="gallery-venue-addr">1869 rue de la Boissière, 78370 Plaisir</div>
             </div>
             <span class="gallery-venue-time sage">19h30</span>
         </div>
