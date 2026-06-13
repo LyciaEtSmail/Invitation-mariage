@@ -47,16 +47,19 @@
         .env-svg{width:220px;height:150px;filter:drop-shadow(0 14px 35px rgba(0,0,0,.13));display:block;margin:0 auto}
         .env-flap-top{transform-origin:110px 0;transform-box:fill-box;transition:transform .7s cubic-bezier(.4,0,.2,1)}
         .env-wrap:hover .env-flap-top,.env-wrap.open .env-flap-top{transform:rotateX(-180deg)}
-        .env-letter-strip{
-            display:block;margin:0 auto;width:180px;
-            background:white;border-radius:3px;padding:7px 18px;
-            font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--text);
-            box-shadow:0 4px 14px rgba(0,0,0,.1);
-            opacity:0;transform:translateY(0);
-            transition:opacity .3s ease,transform .7s ease;
-            margin-top:-8px;
+        .env-card{
+            display:block;margin:-14px auto 0;width:190px;
+            background:white;border-radius:4px;padding:18px 20px 16px;
+            border-top:3px solid var(--sage);
+            box-shadow:0 10px 35px rgba(0,0,0,.14);
+            text-align:center;
+            opacity:0;transform:translateY(0) rotate(3deg);
+            transition:opacity .5s ease .25s, transform .85s cubic-bezier(.2,.8,.2,1) .15s;
         }
-        .env-wrap.open .env-letter-strip{opacity:1;transform:translateY(-88px)}
+        .env-wrap.open .env-card{opacity:1;transform:translateY(-130px) rotate(0deg)}
+        .env-card-names{font-family:'Great Vibes',cursive;font-size:1.65rem;color:var(--dark);line-height:1.2}
+        .env-card-rule{width:28px;height:1px;background:var(--sage);margin:8px auto}
+        .env-card-date{font-family:'Cormorant Garamond',serif;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
         .env-btn{
             display:inline-block;margin-top:32px;padding:14px 46px;
             background:transparent;border:1px solid var(--gold);
@@ -363,9 +366,6 @@
 </button>
 <!-- ENVELOPE SCREEN -->
 <div id="env-screen">
-    <p class="env-pre">Vous êtes invités</p>
-    <h1 class="env-h1">Lycia &amp; Smail</h1>
-    <p class="env-sub">11 &middot; 07 &middot; 2026</p>
     <div class="env-wrap" id="envWrap" onclick="openEnv()">
         <svg class="env-svg" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
             <rect fill="#f0e6d8" width="220" height="150" rx="4"/>
@@ -376,7 +376,11 @@
             <circle cx="110" cy="86" r="15" fill="#c9a96e" opacity=".9"/>
             <text x="110" y="92" text-anchor="middle" font-family="serif" font-size="13" fill="white">&#9829;</text>
         </svg>
-        <span class="env-letter-strip">L &amp; S &middot; 11.07.2026</span>
+        <div class="env-card">
+            <div class="env-card-names">Lycia &amp; Smail</div>
+            <div class="env-card-rule"></div>
+            <div class="env-card-date">11 &middot; 07 &middot; 2026</div>
+        </div>
         <br>
         <button class="env-btn" onclick="openEnv()">Ouvrir l&#39;invitation</button>
     </div>
@@ -705,7 +709,7 @@ function openEnv() {
         document.getElementById('env-screen').classList.add('hidden');
         document.body.style.overflow = '';
         startMusic();
-    }, 1400);
+    }, 2000);
 }
 
 // ===== MUSIC =====
