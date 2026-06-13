@@ -326,6 +326,11 @@
             transition:background .3s
         }
         .lb-close:hover{background:var(--rose)}
+        .lb-prev,.lb-next{position:fixed;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;color:white;font-size:2.2rem;width:48px;height:48px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s;line-height:1;z-index:2001}
+        .lb-prev:hover,.lb-next:hover{background:rgba(255,255,255,.3)}
+        .lb-prev{left:20px}
+        .lb-next{right:20px}
+        .lb-counter{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);font-size:.58rem;letter-spacing:3px;color:rgba(255,255,255,.45)}
         /* -------- ANIM -------- */
         @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
         .reveal{opacity:0;transform:translateY(28px);transition:opacity .85s ease,transform .85s ease}
@@ -334,27 +339,10 @@
         @media(max-width:760px){
             nav{padding:14px 20px}
             .nav-links{display:none}
-            .nav-links.open{
-                display:flex;flex-direction:column;align-items:center;justify-content:center;gap:38px;
-                position:fixed;inset:0;z-index:999;
-                background:rgba(250,246,240,.97);backdrop-filter:blur(14px);
-            }
-            .nav-links.open a{font-size:1rem !important;letter-spacing:3px;color:var(--dark) !important}
-            .nav-links.open a:hover{color:var(--sage) !important}
-            .nav-close{display:flex}
             .form-row{grid-template-columns:1fr}
             .rsvp-box{padding:30px 22px}
             .cd-dot{display:none}
         }
-        .nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
-        .nav-burger span{display:block;width:22px;height:1.5px;background:rgba(255,255,255,.85);transition:all .3s}
-        nav.scrolled .nav-burger span{background:var(--dark)}
-        .nav-close{
-            display:none;position:absolute;top:18px;right:20px;
-            background:none;border:none;font-size:1.4rem;
-            color:var(--muted);cursor:pointer;line-height:1
-        }
-        @media(max-width:760px){.nav-burger{display:flex}}
     </style>
 </head>
 <body>
@@ -396,16 +384,12 @@
 <!-- NAV -->
 <nav id="nav">
     <a href="#hero" class="nav-brand">L &amp; S</a>
-    <ul class="nav-links" id="navLinks">
-        <button class="nav-close" onclick="closeNav()">&#10005;</button>
-        <li><a href="#welcome" onclick="closeNav()">Notre message</a></li>
-        <li><a href="#details" onclick="closeNav()">Programme</a></li>
-        <li><a href="#gallery" onclick="closeNav()">Photos</a></li>
-        <li><a href="#rsvp" onclick="closeNav()">Confirmation</a></li>
+    <ul class="nav-links">
+        <li><a href="#welcome">Notre message</a></li>
+        <li><a href="#details">Programme</a></li>
+        <li><a href="#gallery">Photos</a></li>
+        <li><a href="#rsvp">Confirmation</a></li>
     </ul>
-    <button class="nav-burger" onclick="openNav()">
-        <span></span><span></span><span></span>
-    </button>
 </nav>
 <!-- HERO -->
 <section id="hero">
@@ -629,15 +613,15 @@
             <span class="gallery-venue-time sage">19h30</span>
         </div>
         <div class="gallery-grid">
-            <div class="gphoto" data-src="salle-1.png" onclick="openLb(this)">
+            <div class="gphoto" data-src="salle-1.png" data-group="salle" data-idx="0" onclick="openLb(this)">
                 <div class="gphoto-ph"><div class="gphoto-ph-ico">&#9998;</div><div class="gphoto-ph-txt">Ajouter une photo</div></div>
                 <div class="gphoto-overlay"><span class="gphoto-zoom">&#128269;</span></div>
             </div>
-            <div class="gphoto" data-src="salle-2.jpeg" onclick="openLb(this)">
+            <div class="gphoto" data-src="salle-2.jpeg" data-group="salle" data-idx="1" onclick="openLb(this)">
                 <div class="gphoto-ph"><div class="gphoto-ph-ico">&#9998;</div><div class="gphoto-ph-txt">Ajouter une photo</div></div>
                 <div class="gphoto-overlay"><span class="gphoto-zoom">&#128269;</span></div>
             </div>
-            <div class="gphoto" data-src="salle-3.png" onclick="openLb(this)">
+            <div class="gphoto" data-src="salle-3.png" data-group="salle" data-idx="2" onclick="openLb(this)">
                 <div class="gphoto-ph"><div class="gphoto-ph-ico">&#9998;</div><div class="gphoto-ph-txt">Ajouter une photo</div></div>
                 <div class="gphoto-overlay"><span class="gphoto-zoom">&#128269;</span></div>
             </div>
@@ -647,10 +631,13 @@
 
 <!-- LIGHTBOX -->
 <div id="lightbox" onclick="closeLb()">
+    <button class="lb-prev" onclick="event.stopPropagation();lbNav(-1)">&#8249;</button>
     <div class="lb-wrap" onclick="event.stopPropagation()">
         <img id="lb-img" src="" alt="Photo du lieu">
         <button class="lb-close" onclick="closeLb()">&#10005;</button>
     </div>
+    <button class="lb-next" onclick="event.stopPropagation();lbNav(1)">&#8250;</button>
+    <div class="lb-counter" id="lb-counter"></div>
 </div>
 
 <!-- RSVP -->
@@ -813,15 +800,6 @@ var obs = new IntersectionObserver(function(es) {
     es.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('in'); });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
-// ===== MOBILE NAV =====
-function openNav() {
-    document.getElementById('navLinks').classList.add('open');
-    document.body.style.overflow = 'hidden';
-}
-function closeNav() {
-    document.getElementById('navLinks').classList.remove('open');
-    document.body.style.overflow = '';
-}
 // ===== NAVBAR =====
 window.addEventListener('scroll', function() {
     document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
@@ -835,18 +813,56 @@ document.querySelectorAll('.gphoto').forEach(function(el) {
         if (ph) ph.style.display = 'none';
     }
 });
+
+// ===== LIGHTBOX =====
+var lbGroup = [], lbIndex = 0;
+
 function openLb(el) {
     var src = (el.dataset.src || '').trim();
     if (!src) return;
-    document.getElementById('lb-img').src = src;
+    var group = el.dataset.group;
+    if (group) {
+        lbGroup = Array.from(document.querySelectorAll('[data-group="' + group + '"]'))
+            .map(function(e) { return (e.dataset.src || '').trim(); }).filter(Boolean);
+        lbIndex = parseInt(el.dataset.idx || '0', 10);
+    } else {
+        lbGroup = [src];
+        lbIndex = 0;
+    }
+    lbShow();
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
+}
+function lbShow() {
+    document.getElementById('lb-img').src = lbGroup[lbIndex];
+    var counter = document.getElementById('lb-counter');
+    var hasMany = lbGroup.length > 1;
+    counter.textContent = hasMany ? (lbIndex + 1) + ' / ' + lbGroup.length : '';
+    document.querySelector('.lb-prev').style.display = hasMany ? 'flex' : 'none';
+    document.querySelector('.lb-next').style.display = hasMany ? 'flex' : 'none';
+}
+function lbNav(dir) {
+    lbIndex = (lbIndex + dir + lbGroup.length) % lbGroup.length;
+    lbShow();
 }
 function closeLb() {
     document.getElementById('lightbox').classList.remove('open');
     document.body.style.overflow = '';
 }
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLb(); });
+// Clavier + swipe tactile dans la lightbox
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape')     closeLb();
+    if (e.key === 'ArrowLeft')  lbNav(-1);
+    if (e.key === 'ArrowRight') lbNav(1);
+});
+(function() {
+    var lb = document.getElementById('lightbox'), startX = 0;
+    lb.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener('touchend', function(e) {
+        var diff = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) lbNav(diff > 0 ? 1 : -1);
+    }, { passive: true });
+})();
 
 // ===== RSVP =====
 // ⬇️  Collez ici l'URL de votre Google Apps Script (voir instructions)
