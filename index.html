@@ -42,8 +42,8 @@
         .env-wrap:hover .env-flap-top,.env-wrap.open .env-flap-top{transform:rotateX(-180deg)}
         .env-letter-strip{
             display:block;margin:0 auto;width:180px;
-            background:var(--sage);border-radius:3px;padding:7px 18px;
-            font-family:'Cormorant Garamond',serif;font-size:.9rem;color:white;
+            background:white;border-radius:3px;padding:7px 18px;
+            font-family:'Cormorant Garamond',serif;font-size:.9rem;color:var(--text);
             box-shadow:0 4px 14px rgba(0,0,0,.1);
             opacity:0;transform:translateY(0);
             transition:opacity .3s ease,transform .7s ease;
@@ -52,11 +52,11 @@
         .env-wrap.open .env-letter-strip{opacity:1;transform:translateY(-88px)}
         .env-btn{
             display:inline-block;margin-top:32px;padding:14px 46px;
-            background:transparent;border:1px solid var(--sage);
+            background:transparent;border:1px solid var(--gold);
             font-family:'Montserrat',sans-serif;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;
-            color:var(--sage-d);cursor:pointer;transition:all .3s
+            color:var(--dark);cursor:pointer;transition:all .3s
         }
-        .env-btn:hover{background:var(--sage);color:white}
+        .env-btn:hover{background:var(--gold);color:white}
         /* -------- NAV -------- */
         nav{position:fixed;top:0;width:100%;z-index:100;padding:22px 50px;display:flex;justify-content:space-between;align-items:center;transition:all .3s}
         nav.scrolled{background:rgba(250,246,240,.96);backdrop-filter:blur(10px);padding:13px 50px;box-shadow:0 1px 20px rgba(0,0,0,.06)}
@@ -354,13 +354,13 @@
     <p class="env-pre">Vous êtes invités</p>
     <h1 class="env-h1">Lycia &amp; Smail</h1>
     <p class="env-sub">11 &middot; 07 &middot; 2026</p>
-    <div class="env-wrap" id="envWrap">
+    <div class="env-wrap" id="envWrap" onclick="openEnv()">
         <svg class="env-svg" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg">
-            <rect fill="#e0ede0" width="220" height="150" rx="4"/>
-            <polygon fill="#c8d9c4" points="0,0 110,82 0,150"/>
-            <polygon fill="#bdd0b8" points="220,0 110,82 220,150"/>
-            <polygon fill="#c2d3be" points="0,150 220,150 110,82"/>
-            <polygon class="env-flap-top" fill="#7a9e7e" points="0,0 220,0 110,82"/>
+            <rect fill="#f0e6d8" width="220" height="150" rx="4"/>
+            <polygon fill="#e8d8c4" points="0,0 110,82 0,150"/>
+            <polygon fill="#ddd0bc" points="220,0 110,82 220,150"/>
+            <polygon fill="#e0ceb4" points="0,150 220,150 110,82"/>
+            <polygon class="env-flap-top" fill="#c9b898" points="0,0 220,0 110,82"/>
             <circle cx="110" cy="86" r="15" fill="#c9a96e" opacity=".9"/>
             <text x="110" y="92" text-anchor="middle" font-family="serif" font-size="13" fill="white">&#9829;</text>
         </svg>
@@ -681,7 +681,10 @@
 <script>
 // ===== ENVELOPE =====
 document.body.style.overflow = 'hidden';
+var envOpened = false;
 function openEnv() {
+    if (envOpened) return;
+    envOpened = true;
     document.getElementById('envWrap').classList.add('open');
     spawnPetals(30);
     setTimeout(function() {
@@ -772,7 +775,7 @@ function tick() {
     var h = Math.floor((diff % 86400000) / 3600000);
     var m = Math.floor((diff % 3600000)  / 60000);
     var s = Math.floor((diff % 60000)    / 1000);
-    document.getElementById('cd-d').textContent = String(d).padStart(3,'0');
+    document.getElementById('cd-d').textContent = String(d);
     document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
     document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
     document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
