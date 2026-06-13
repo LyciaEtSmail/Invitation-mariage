@@ -817,8 +817,8 @@ function closeLb() {
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLb(); });
 
 // ===== RSVP =====
-// ⬇️  Collez ici votre lien Formspree (ex: https://formspree.io/f/XXXXXXXX)
-var RSVP_URL = '';
+// ⬇️  Collez ici l'URL de votre Google Apps Script (voir instructions)
+var RSVP_URL = 'https://script.google.com/macros/s/AKfycbzXnqaLwzkXPxp_2QL2OjSBSYmtT0ukkN-9EJgEb4Mnjq2lbGbpCvQkd-IVayWs8NU/exec';
 
 function submitForm() {
     var btn = document.querySelector('.sub-btn');
@@ -832,19 +832,20 @@ function submitForm() {
         message:  document.getElementById('f-message').value  || ''
     };
     if (!RSVP_URL) {
-        // Lien pas encore configuré : on affiche quand même le message de succès
         document.getElementById('formBody').style.display = 'none';
         document.getElementById('formOk').classList.add('show');
         return;
     }
     btn.textContent = 'Envoi en cours…';
     btn.disabled = true;
+    // mode no-cors requis pour Google Apps Script
     fetch(RSVP_URL, {
         method:  'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        mode:    'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
         body:    JSON.stringify(data)
     })
-    .then(function(r) {
+    .then(function() {
         document.getElementById('formBody').style.display = 'none';
         document.getElementById('formOk').classList.add('show');
     })
