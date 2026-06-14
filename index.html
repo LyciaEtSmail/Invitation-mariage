@@ -335,10 +335,10 @@
 <div id="petals"></div>
 
 <!-- AUDIO : remplacez le src par votre MP3 (lien direct OneDrive, Google Drive, etc.) -->
-<audio id="bg-music" loop preload="auto">
-    <source src="musique.opus" type="audio/ogg; codecs=opus">
-    <source src="musique.m4a"  type="audio/mp4">
+<audio id="bg-music" loop preload="auto" playsinline>
     <source src="musique.mp3"  type="audio/mpeg">
+    <source src="musique.m4a"  type="audio/mp4">
+    <source src="musique.opus" type="audio/ogg; codecs=opus">
 </audio>
 
 <!-- BOUTON MUSIQUE -->
@@ -695,6 +695,17 @@ function openEnv() {
     envOpened = true;
     document.getElementById('envWrap').classList.add('open');
     spawnPetals(30);
+    // iOS Safari : l'audio doit être déverrouillé dans le handler direct du geste utilisateur.
+    // On joue+met en pause immédiatement pour "primer" l'élément audio,
+    // ce qui permet de le reprendre librement dans le setTimeout suivant.
+    music.load();
+    var iosUnlock = music.play();
+    if (iosUnlock !== undefined) {
+        iosUnlock.then(function() {
+            music.pause();
+            music.currentTime = 0;
+        }).catch(function() {});
+    }
     // Phase 1 : après ouverture du rabat → animation de sortie
     setTimeout(function() {
         document.getElementById('env-screen').classList.add('leaving');
