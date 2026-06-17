@@ -18,11 +18,11 @@
         :root {
             --cream:#faf6f0; --gold:#c9a96e; --gold-l:#e8d5a3;
             --rose:#d4879c;  --dark:#2c1f14; --text:#4a3728; --muted:#8a7060;
-            --sage:#7a9e7e;  --sage-l:#c5d4bc; --sage-d:#5c7a60;
+            --sage:#7a9e7e;  --sage-l:#c8d7bf; --sage-d:#6b8a70;
         }
         *{margin:0;padding:0;box-sizing:border-box}
         html{scroll-behavior:smooth}
-        body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+        body{font-family:'Montserrat',sans-serif;background:var(--sage-l);color:var(--text);overflow-x:hidden}
         /* -------- PETALS -------- */
         #petals{position:fixed;inset:0;pointer-events:none;z-index:500;overflow:hidden}
         .petal{position:absolute;top:-30px;border-radius:50% 0;opacity:0;animation:petalFall linear infinite}
@@ -34,7 +34,7 @@
         /* -------- ENVELOPE SCREEN -------- */
         #env-screen{
             position:fixed;inset:0;z-index:9999;
-            background:radial-gradient(ellipse at 50% 50%,#f7f0e8 0%,#e8d5bc 60%,#ddc8a6 100%);
+            background:linear-gradient(180deg, #d5e0c6 0%, #b9cfab 100%);
             display:flex;align-items:center;justify-content:center;
             padding:20px;cursor:pointer;
             transition:opacity 0.9s ease,visibility 0.9s ease,transform 1.1s cubic-bezier(.4,0,.6,1);
@@ -47,7 +47,8 @@
         .env-wrap:hover .env-svg{transform:translateY(-7px);filter:drop-shadow(0 38px 80px rgba(0,0,0,.3))}
         .env-flap-top{transform-origin:50% 0%;transform-box:fill-box;transition:transform .95s cubic-bezier(.3,0,.2,1)}
         .env-wrap:hover .env-flap-top,.env-wrap.open .env-flap-top{transform:rotateX(-180deg)}
-        .env-hint{margin-top:28px;font-family:'Cormorant Garamond',serif;font-size:.7rem;letter-spacing:5px;text-transform:uppercase;color:var(--muted);animation:hintPulse 2.5s ease infinite;pointer-events:none}
+        .env-open-btn{margin-top:28px;font-family:'Cormorant Garamond',serif;font-size:.82rem;letter-spacing:2px;text-transform:uppercase;color:white;background:#A7BC8A;border:1px solid rgba(167,188,138,.9);padding:12px 26px;border-radius:999px;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,.18);transition:transform .18s ease,box-shadow .18s ease;display:inline-block;font-weight:700}
+        .env-open-btn:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(0,0,0,.24)}
         @keyframes hintPulse{0%,100%{opacity:.2;transform:translateY(0)}50%{opacity:.8;transform:translateY(-4px)}}
         /* -------- NAV -------- */
         nav{position:fixed;top:0;width:100%;z-index:100;padding:22px 50px;display:flex;justify-content:space-between;align-items:center;transition:all .3s}
@@ -99,7 +100,7 @@
         .sl.sage{background:var(--sage)}
         .sd.sage{background:var(--sage)}
         /* -------- COUNTDOWN -------- */
-        #countdown{background:linear-gradient(140deg,var(--dark) 0%,#3d2a1a 100%);color:white}
+        #countdown{background:#A7BC8A;color:white}
         #countdown .sec-eye{color:var(--gold-l)}
         #countdown .sec-ttl{color:white}
         #countdown .sl,#countdown .sd{background:var(--gold-l)}
@@ -211,16 +212,16 @@
         .ro{flex:1}
         .ro input[type=radio]{display:none}
         .ro label{display:block;padding:12px 8px;border:1px solid #e8e0d8;border-radius:2px;text-align:center;cursor:pointer;font-size:.62rem !important;letter-spacing:1px !important;text-transform:uppercase;color:var(--muted) !important;transition:all .3s}
-        .ro input[type=radio]:checked+label{border-color:var(--sage);background:var(--sage);color:white !important}
-        .sub-btn{width:100%;padding:17px;background:linear-gradient(135deg,var(--sage-d),var(--sage));color:white;border:none;font-family:'Montserrat',sans-serif;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:2px;margin-top:10px;transition:all .3s}
-        .sub-btn:hover{background:linear-gradient(135deg,var(--sage),var(--sage-d));transform:translateY(-2px);box-shadow:0 8px 25px rgba(122,158,126,.3)}
+        .ro input[type=radio]:checked+label{border-color:#A7BC8A;background:#A7BC8A;color:white !important}
+        .sub-btn{width:100%;padding:17px;background:linear-gradient(135deg,#8fa46d,#A7BC8A);color:white;border:none;font-family:'Montserrat',sans-serif;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border-radius:2px;margin-top:10px;transition:all .3s}
+        .sub-btn:hover{background:linear-gradient(135deg,#A7BC8A,#8fa46d);transform:translateY(-2px);box-shadow:0 8px 25px rgba(122,158,126,.3)}
         .form-ok{display:none;padding:40px 20px}
         .form-ok.show{display:block}
         .form-ok-ico{font-size:2.5rem;margin-bottom:20px}
         .form-ok h3{font-family:'Cormorant Garamond',serif;font-size:2rem;font-style:italic;color:var(--dark);margin-bottom:12px}
         .form-ok p{font-size:.83rem;color:var(--muted);line-height:1.8}
         /* -------- FOOTER -------- */
-        footer{background:linear-gradient(160deg,var(--sage-d) 0%,var(--sage) 100%);color:rgba(255,255,255,.75);text-align:center;padding:60px 20px}
+        footer{background:#A7BC8A;color:rgba(255,255,255,.75);text-align:center;padding:60px 20px}
         .ft-names{font-family:'Great Vibes',cursive;font-size:2.8rem;color:white;margin-bottom:10px}
         .ft-date{font-family:'Cormorant Garamond',serif;font-size:.88rem;letter-spacing:5px;color:rgba(255,255,255,.6);margin-bottom:28px}
         .ft-rule{width:50px;height:1px;background:rgba(255,255,255,.4);margin:0 auto 18px}
@@ -347,32 +348,32 @@
     <span class="music-icon-pause">&#10074;&#10074;</span>
 </button>
 <!-- ENVELOPE SCREEN -->
-<div id="env-screen" onclick="openEnv()">
-    <div class="env-wrap" id="envWrap">
+<div id="env-screen">
+    <div class="env-wrap" id="envWrap" onclick="openEnv()">
         <svg class="env-svg" viewBox="0 0 420 290" xmlns="http://www.w3.org/2000/svg">
             <!-- Corps de l'enveloppe -->
-            <rect fill="#f5ede0" width="420" height="290" rx="6"/>
-            <rect fill="none" stroke="#c8a87a" stroke-width="1.5" x=".75" y=".75" width="418.5" height="288.5" rx="5.5" opacity=".45"/>
+            <rect fill="#d7e1cb" width="420" height="290" rx="6"/>
+            <rect fill="none" stroke="#b7c8ad" stroke-width="1.5" x=".75" y=".75" width="418.5" height="288.5" rx="5.5" opacity=".45"/>
             <!-- Triangles latéraux (plis) -->
-            <polygon fill="#eadcc8" points="0,0 210,168 0,290"/>
-            <polygon fill="#dfccb6" points="420,0 210,168 420,290"/>
+            <polygon fill="#d3dec8" points="0,0 210,168 0,290"/>
+            <polygon fill="#c5d4b0" points="420,0 210,168 420,290"/>
             <!-- Triangle bas -->
-            <polygon fill="#e8d8c4" points="0,290 420,290 210,168"/>
+            <polygon fill="#c7d7b4" points="0,290 420,290 210,168"/>
             <!-- Rabat supérieur + sceau (groupe animé ensemble) -->
             <g class="env-flap-top">
-                <polygon fill="#d4b894" points="0,0 420,0 210,168"/>
+                <polygon fill="#d7e1cb" points="0,0 420,0 210,168"/>
                 <polygon fill="none" stroke="#c0a07a" stroke-width="1" opacity=".35" points="1,1 419,1 210,167"/>
                 <!-- Sceau de cire -->
-                <circle cx="210" cy="130" r="38" fill="#c9a96e"/>
+                <circle cx="210" cy="130" r="38" fill="#A7BC8A"/>
                 <circle cx="210" cy="130" r="33" fill="none" stroke="rgba(255,255,255,.32)" stroke-width="2"/>
                 <circle cx="210" cy="130" r="27" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.2"/>
                 <!-- Cœur décoratif -->
-                <text x="210" y="122" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="rgba(255,255,255,.5)">&#9829;</text>
+                <text x="210" y="122" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="white">&#9829;</text>
                 <!-- Monogramme L &amp; S -->
                 <text x="210" y="138" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="16" font-style="italic" fill="white" letter-spacing="3">L &amp; S</text>
             </g>
         </svg>
-        <p class="env-hint">Cliquez pour ouvrir</p>
+        <button class="env-open-btn" type="button" onclick="event.stopPropagation(); openEnv()">Cliquez pour ouvrir</button>
     </div>
 </div>
 <!-- NAV -->
