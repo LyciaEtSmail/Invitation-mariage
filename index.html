@@ -85,6 +85,7 @@
         .hero-loc{font-family:'Cormorant Garamond',serif;font-size:clamp(.8rem,2vw,1rem);font-style:italic;color:rgba(255,255,255,.5);margin-top:5px;animation:fadeUp 1s 1.2s both}
         .scroll-hint{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:42px;animation:heroBounce 2.5s ease infinite .5s;cursor:default}
         .scroll-hint span{font-size:.55rem;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.6)}
+        .scroll-hint .scroll-tip{margin-top:8px;opacity:.8;letter-spacing:3px;color:rgba(255,255,255,.65)}
         .scroll-chevron-svg{width:20px;height:20px;stroke:rgba(255,255,255,.45);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
         @keyframes heroBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
         .cd-dot{font-family:'Cormorant Garamond',serif;font-size:4rem;color:var(--sage);opacity:.5;padding-top:5px}
@@ -412,6 +413,7 @@
         <div class="scroll-hint">
             <span>Confirmer ma présence</span>
             <svg class="scroll-chevron-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+            <span class="scroll-tip">Faites glisser vers le bas</span>
         </div>
     </div>
 </section>
